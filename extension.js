@@ -26,6 +26,7 @@ function addConsole(type = "log",line = 1){
   const editor = vscode.window.activeTextEditor;
   if(!editor) return
   const selection = editor.selection;
+  const document = editor.document
   const selectionText = editor.document.getText(selection);
 
   // 创建代码片段
@@ -39,7 +40,16 @@ function addConsole(type = "log",line = 1){
 
   // 设置插入片段的位置
   const prevPos = editor.selection.active;
-  const nextPos = new vscode.Position(prevPos.line+line, 0)
+  const lineText = document.lineAt(prevPos.line).b
+  const lineTextLen = lineText.length
+  let colum = 0
+  for(let i = 0; i < lineTextLen; i++){
+    if(lineText[i] !== " "){
+      colum = i
+      break;
+    }
+  }
+  const nextPos = new vscode.Position(prevPos.line+line, colum)
 
   // 插入代码片段
   editor.insertSnippet(snippet,nextPos).then(() => {

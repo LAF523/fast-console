@@ -16,8 +16,8 @@
   "contributes": {
     "commands": [
       {
-      "command": "fast-console.log.nextline",
-      "title": "Add Console Log At Next Line"
+        "command": "fast-console.log.nextline",
+        "title": "Add Console Log At Next Line"
       },
       {
         "command": "fast-console.log.prevline",
@@ -26,17 +26,17 @@
       {
         "command": "fast-console.dir.nextline",
         "title": "Add Console Dir At Next Line"
-        },
-        {
-          "command": "fast-console.dir.prevline",
-          "title": "Add Console Dir At Prev Line"
-        }
+      },
+      {
+        "command": "fast-console.dir.prevline",
+        "title": "Add Console Dir At Prev Line"
+      }
     ],
     "keybindings": [
       {
-          "command": "fast-console.log.nextline",
-          "key": "alt+2",
-          "mac": "cmd+2"
+        "command": "fast-console.log.nextline",
+        "key": "alt+2",
+        "mac": "cmd+2"
       },
       {
         "command": "fast-console.log.prevline",
