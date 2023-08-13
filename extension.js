@@ -1,7 +1,8 @@
 const vscode = require('vscode');
+const editor = vscode.window.activeTextEditor;
 
 /**
- * @message: 插件激活时触发
+ * @message: 插件激活时触发,注册命令
  * @param {vscode.ExtensionContext} context
  * @since: 2023-08-01 16:16:33
  */
@@ -22,46 +23,14 @@ function deactivate() {}
  * @param {*} line 插入位置偏移量
  * @since: 2023-08-01 18:29:32
  */
-function addConsole(type = "log",line = 1){
-  const editor = vscode.window.activeTextEditor;
-  if(!editor) return
-  const selection = editor.selection;
-  const document = editor.document
-  const selectionText = editor.document.getText(selection);
-
-  // 创建代码片段
-  let str
-  if(selectionText === ""){
-    str = `console.${type}();`
-  }else {
-    str = `console.${type}("${selectionText}:",${selectionText});`
-  }
-  const snippet = new vscode.SnippetString(str);
-
-  // 设置插入片段的位置
-  const prevPos = editor.selection.active;
-  const lineText = document.lineAt(prevPos.line).b
-  const lineTextLen = lineText.length
-  let colum = 0
-  for(let i = 0; i < lineTextLen; i++){
-    if(lineText[i] !== " "){
-      colum = i
-      break;
-    }
-  }
-  const nextPos = new vscode.Position(prevPos.line+line, colum)
-
-  // 插入代码片段
-  editor.insertSnippet(snippet,nextPos).then(() => {
-    vscode.commands.executeCommand('type', {
-        text: '\n',
-    });
-    cursorMove("left",3)
-  });
+async function addConsole(type = "log",line){
+  const nextPos = getInsterPos(line)
+  const snippet = await getText(type)
+  insertText(snippet,nextPos)
 }
 
 /**
- * @message: 将光标移动
+ * @message: 移动光标
  * @param {*} direction 方向
  * @param {*} distance 步长
  * @since: 2023-08-01 18:23:36
@@ -75,6 +44,63 @@ function cursorMove(direction,distance = 1){
       select: false, // 不选中文本
     });
   }
+}
+
+/**
+ * @message: 生成打印语句,优先使用选中的值,选中的值为空,使用copy的值,copy的值为空,使用空
+ * @param {*} type 打印类型
+ * @return {Promise}
+ * @since: 2023-08-14 01:52:37
+ */
+const getText = async (type) => {
+  if(!editor) return
+  let targetText;
+  let snippet;
+  const selection = editor.selection;
+  targetText = editor.document.getText(selection);
+  if(targetText === ""){
+    targetText = await vscode.env.clipboard.readText()
+  }
+  if(targetText === ""){
+    snippet = new vscode.SnippetString(`console.${type}();`);
+  }else {
+    snippet = new vscode.SnippetString(`console.${type}("${targetText}:",${targetText});`);
+  }
+  return snippet
+}
+/**
+ * @message: 获取打印位置
+ * @param {Number} line 当前位置偏移量
+ * @return {object} 打印位置对象,包含位置信息
+ * @since: 2023-08-14 02:05:45
+ */
+const getInsterPos = (line = 1) => {
+    const prevPos = editor.selection.active;
+    const document = editor.document
+    const lineText = document.lineAt(prevPos.line).b
+    const lineTextLen = lineText.length
+    let colum = 0
+    for(let i = 0; i < lineTextLen; i++){
+      if(lineText[i] !== " "){
+        colum = i
+        break;
+      }
+    }
+    return new vscode.Position(prevPos.line+line, colum)
+}
+/**
+ * @message: 插入打印语句
+ * @param {*} snippet 打印语句
+ * @param {*} nextPos 插入位置
+ * @since: 2023-08-14 02:05:08
+ */
+const insertText = (snippet,nextPos) => {
+  editor.insertSnippet(snippet,nextPos).then(() => {
+    vscode.commands.executeCommand('type', {
+        text: '\n',
+    });
+    cursorMove("left",3)
+  });
 }
 
 
