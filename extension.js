@@ -1,5 +1,4 @@
 const vscode = require('vscode');
-const editor = vscode.window.activeTextEditor;
 
 /**
  * @message: 插件激活时触发,注册命令
@@ -11,7 +10,7 @@ function activate(context) {
     vscode.commands.registerCommand('fast-console.log.nextline',()=> addConsole()),
     vscode.commands.registerCommand('fast-console.log.prevline',()=>addConsole("log",0)),
     vscode.commands.registerCommand('fast-console.dir.nextline',()=> addConsole("dir")),
-    vscode.commands.registerCommand('fast-console.dir.prevline',()=> addConsole("dir",0))
+    vscode.commands.registerCommand('fast-console.dir.prevline',()=> addConsole("dir",0)),
   );
 }
 
@@ -26,6 +25,7 @@ function deactivate() {}
 async function addConsole(type = "log",line){
   const nextPos = getInsterPos(line)
   const snippet = await getText(type)
+
   insertText(snippet,nextPos)
 }
 
@@ -53,6 +53,7 @@ function cursorMove(direction,distance = 1){
  * @since: 2023-08-14 01:52:37
  */
 const getText = async (type) => {
+  const editor = vscode.window.activeTextEditor;
   if(!editor) return
   let targetText;
   let snippet;
@@ -75,6 +76,7 @@ const getText = async (type) => {
  * @since: 2023-08-14 02:05:45
  */
 const getInsterPos = (line = 1) => {
+    const editor = vscode.window.activeTextEditor;
     const prevPos = editor.selection.active;
     const document = editor.document
     const lineText = document.lineAt(prevPos.line).b
@@ -95,12 +97,13 @@ const getInsterPos = (line = 1) => {
  * @since: 2023-08-14 02:05:08
  */
 const insertText = (snippet,nextPos) => {
-  editor.insertSnippet(snippet,nextPos).then(() => {
-    vscode.commands.executeCommand('type', {
-        text: '\n',
+  const editor = vscode.window.activeTextEditor;
+    editor.insertSnippet(snippet,nextPos).then(() => {
+      vscode.commands.executeCommand('type', {
+          text: '\n',
+      });
+      cursorMove("left",3)
     });
-    cursorMove("left",3)
-  });
 }
 
 
