@@ -2,7 +2,7 @@
   "name": "speed-console-log",
   "displayName": "Fast-ConsoleLog",
   "description": "",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "liaofei",
   "engines": {
     "vscode": "^1.80.0"
@@ -10,6 +10,7 @@
   "categories": [
     "Other"
   ],
+  "icon": "imgs/icon.jpg",
   "activationEvents": [
     "onStartup"
   ],
@@ -55,6 +56,10 @@
         "mac": "cmd+shift+1"
       }
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LAF523/fast-console"
   },
   "scripts": {
     "lint": "eslint .",
