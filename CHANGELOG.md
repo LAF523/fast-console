@@ -1,9 +1,5 @@
 # Change Log
 
-All notable changes to the "fast-console" extension will be documented in this file.
+0.0.5 - 2023-12-29
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+- 修复mac和window系统换行符不一致,导致插入语句打乱上下文代码缩进问题
