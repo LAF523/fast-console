@@ -1,8 +1,6 @@
 const vscode = require('vscode');
 const os = require('os');
 
-const editor = vscode.window.activeTextEditor;
-
 /**
  * @message: 插入console字符串
  * @param {'log'|'dir'} type console类型
@@ -23,7 +21,7 @@ async function addConsole(type = 'log', line) {
  * @since: 2023-08-14 02:05:45
  */
 function getInsterPos(line = 1) {
-  const prevPos = editor.selection.active;
+  const prevPos = vscode.window.activeTextEditor.selection.active;
   return new vscode.Position(prevPos.line + line, 0);
 };
 
@@ -33,6 +31,7 @@ function getInsterPos(line = 1) {
  * @since: 2023-12-09 12:26:24
  */
 function getIndents() {
+  const editor = vscode.window.activeTextEditor;
   const prevPos = editor.selection.active;
   const document = editor.document;
   const lineText = document.lineAt(prevPos.line);
@@ -50,7 +49,7 @@ function getIndents() {
  * @since: 2023-08-14 01:52:37
  */
 async function getText (type, indent)  {
-  if (!editor) return '';
+  const editor = vscode.window.activeTextEditor;
   let targetText;
   let snippet;
   const selection = editor.selection;
@@ -74,7 +73,7 @@ async function getText (type, indent)  {
  * @since: 2023-08-14 02:05:08
  */
 function insertText(snippet, nextPos) {
-  if (!editor) return '';
+  const editor = vscode.window.activeTextEditor
   editor.insertSnippet(snippet, nextPos).then(() => {
     cursorMove('left', 3);
   });
