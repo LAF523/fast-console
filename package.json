@@ -2,7 +2,7 @@
   "name": "speed-console-log",
   "displayName": "Fast-ConsoleLog",
   "description": "",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "liaofei",
   "engines": {
     "vscode": "^1.80.0"
