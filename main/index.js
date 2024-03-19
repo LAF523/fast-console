@@ -9,8 +9,7 @@ const os = require("os");
  */
 async function addConsole(type = "log", line) {
   const nextPos = getInsterPos(line);
-  const indent = getIndents();
-  const snippet = await getText(type, indent);
+  const snippet = await getText(type);
   await insertText(snippet, nextPos);
   cursorMove("left", 3);
 }
@@ -45,11 +44,22 @@ function getIndents() {
 /**
  * @message: 生成打印语句,优先使用选中的值,选中的值为空,使用copy的值,copy的值为空,使用空
  * @param {'log'|'dir'} type 打印类型
- * @param {String} indent 表示需要缩进的长度
  * @return {Promise}
  * @since: 2023-08-14 01:52:37
  */
-async function getText(type, indent) {
+async function getText(type) {
+  const indent = getIndents();
+  const text = await createText(type, indent);
+  return text;
+}
+/**
+ * @message: 创建插入的内容
+ * @param {"log" | "dir"} type congole类型
+ * @param {string} indent 缩进
+ * @return {Promise<Object>}
+ * @since: 2024-03-19 11:16:02
+ */
+async function createText(type, indent) {
   const editor = vscode.window.activeTextEditor;
   let targetText;
   let snippet;
