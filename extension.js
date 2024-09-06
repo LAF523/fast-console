@@ -1,22 +1,22 @@
-const vscode = require('vscode');
-const {addConsole} = require('./main/index.js')
+const vscode = require("vscode");
+const { addConsole } = require("./main/index.js");
 
 const commandMap = [
   {
-    name: 'fast-console.log.nextline',
-    fn: () => addConsole('log'),
+    name: "fast-console.log.nextline",
+    fn: () => addConsole("log"),
   },
   {
-    name: 'fast-console.log.prevline',
-    fn: () => addConsole('log', 0),
+    name: "fast-console.log.prevline",
+    fn: () => addConsole("log", 0),
   },
   {
-    name: 'fast-console.dir.nextline',
-    fn: () => addConsole('log'),
+    name: "fast-console.dir.nextline",
+    fn: () => addConsole("dir"),
   },
   {
-    name: 'fast-console.dir.prevline',
-    fn: () => addConsole('log', 0),
+    name: "fast-console.dir.prevline",
+    fn: () => addConsole("dir", 0),
   },
 ];
 
@@ -36,4 +36,4 @@ function deactivate() {}
 module.exports = {
   activate,
   deactivate,
-}
+};

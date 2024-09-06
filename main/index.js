@@ -2,7 +2,7 @@ const vscode = require("vscode");
 const os = require("os");
 
 /**
- * @message: 插入console字符串
+ * @message: 主函数,插入console字符串
  * @param {'log'|'dir'} type console类型
  * @param {*} line 插入位置偏移量
  * @since: 2023-08-01 18:29:32
